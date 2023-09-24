@@ -1,0 +1,9 @@
+[submodule "libs/glfw/glfw"]
+	path = libs/glfw/glfw
+	url = https://github.com/glfw/glfw
+[submodule "libs/lua/lua"]
+	path = libs/lua/lua
+	url = https://github.com/lua/lua
+[submodule "libs/imgui/imgui"]
+	path = libs/imgui/imgui
+	url = https://github.com/ocornut/imgui
