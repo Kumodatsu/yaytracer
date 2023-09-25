@@ -10,6 +10,8 @@ extern "C" {
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
+#include "logging.hpp"
+
 int main(int, char**) {
   {
     lua_State* lua = luaL_newstate();
@@ -18,9 +20,9 @@ int main(int, char**) {
 
   const int glfw_succeeded = glfwInit();
   if (glfw_succeeded == 0) {
-    std::cout << "Failed to initialize GLFW." << std::endl;
-    return -1;
+    YAY_LOG(Fatal) << "Failed to initialize GLFW.";
   }
+  YAY_LOG(Info) << "Initialized GLFW.";
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -28,16 +30,17 @@ int main(int, char**) {
     glfwCreateWindow(640, 480, "Yaytracer", nullptr, nullptr);
   if (!window) {
     glfwTerminate();
-    std::cout << "Failed to create window." << std::endl;
-    return -1;
+    YAY_LOG(Fatal) << "Failed to create window.";
   }
+  YAY_LOG(Info) << "Created window.";
   glfwMakeContextCurrent(window);
   const int glad_succeeded =
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
   if (glad_succeeded == 0) {
-    std::cout << "Failed to initialize Glad." << std::endl;
-    return -1;
+    glfwTerminate();
+    YAY_LOG(Fatal) << "Failed to initialize Glad.";
   }
+  YAY_LOG(Info) << "Initialized Glad.";
 
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
@@ -45,6 +48,7 @@ int main(int, char**) {
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init();
+  YAY_LOG(Info) << "Initialized Dear ImGui.";
 
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT);

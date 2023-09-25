@@ -10,6 +10,7 @@ project(
 add_executable(
   yaytracer
   "src/main.cpp"
+  "src/logging.cpp"
 )
 
 set_target_properties(
