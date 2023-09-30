@@ -12,6 +12,7 @@ add_executable(
   "src/main.cpp"
   "src/logging.cpp"
   "src/rendering/pixel_buffer.cpp"
+  "src/rendering/texture.cpp"
   "src/rendering/window.cpp"
 )
 
