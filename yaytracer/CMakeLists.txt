@@ -11,6 +11,7 @@ add_executable(
   yaytracer
   "src/main.cpp"
   "src/logging.cpp"
+  "src/rendering/pixel_buffer.cpp"
   "src/rendering/window.cpp"
 )
 
