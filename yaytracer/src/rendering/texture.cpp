@@ -58,7 +58,7 @@ namespace yay {
     bind();
     m_width  = static_cast<U32>(pixels.width());
     m_height = static_cast<U32>(pixels.height());
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB,
       GL_FLOAT, pixels.data());
   }
 
