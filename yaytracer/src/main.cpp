@@ -9,6 +9,7 @@
 
 #include "graphics/ray.hpp"
 #include "graphics/camera.hpp"
+#include "graphics/sphere.hpp"
 
 int main(int, char**) {
   using namespace yay;
@@ -22,16 +23,25 @@ int main(int, char**) {
   Window window("Yaytracer", width, height);
   Renderer renderer(window);
 
-  Camera camera(width, height, 1.0f, Vector(0.0f, 0.0f, 0.0f));
+  Sphere sphere(Vector(0.0f, 0.0f, -1.0f), 0.5f);
+
+  Camera camera(width, height, 0.5f, Vector(0.0f, 0.0f, 0.0f));
   const auto rays = camera.rays();
   for (UIndex v = 0; v < height; ++v) {
     for (UIndex u = 0; u < width; ++u) {
-      const auto direction = rays[u + width * v].direction;
-      const auto a = 0.5f * direction.y + 1.0f;
-      const auto color = blend(a, colors::White, Color(0.5f, 0.7f, 1.0f));
+      Color color;
+      const auto& ray = rays[u + width * v];
+      const auto intersection = sphere.intersect(ray);
+      if (intersection.has_value()) {
+        color = intersection->color;
+      } else {
+        const auto a = 0.5f * ray.direction.y + 1.0f;
+        color = blend(a, colors::White, Color(0.5f, 0.7f, 1.0f));
+      }
       buffer.at(u, v) = color;
     }
   }
+
 
   while (!window.is_close_requested()) {
     renderer.begin_frame();
