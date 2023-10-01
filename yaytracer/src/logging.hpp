@@ -19,6 +19,8 @@
 #define YAY_LOG(log_level)                                                     \
   YAY_LOG_TO(::yay::Logger::get_static_logger(), log_level)
 
+#define YAY_EXPRESSION(expr) #expr << ": " << (expr)
+
 namespace yay {
 
   enum class LogLevel {
