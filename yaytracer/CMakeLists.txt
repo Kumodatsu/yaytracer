@@ -15,6 +15,7 @@ add_executable(
   "src/rendering/texture.cpp"
   "src/rendering/renderer.cpp"
   "src/rendering/window.cpp"
+  "src/graphics/camera.cpp"
 )
 
 set_target_properties(
