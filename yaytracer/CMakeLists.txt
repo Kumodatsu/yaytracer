@@ -22,6 +22,12 @@ set_target_properties(
   PROPERTIES CXX_STANDARD 20
 )
 
+if(MSVC)
+  target_compile_options(yaytracer PRIVATE "/W4")
+else()
+  target_compile_options(yaytracer PRIVATE "-Wall")
+endif()
+
 target_compile_definitions(
   yaytracer
   PRIVATE "GLFW_INCLUDE_NONE"

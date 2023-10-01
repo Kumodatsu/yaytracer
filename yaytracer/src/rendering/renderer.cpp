@@ -36,13 +36,8 @@ static constexpr std::array<float, 2 * 6> vertex_data {{
 }};
 
 static void APIENTRY gl_debug_callback(
-  GLenum        source,
-  GLenum        type,
-  GLuint        id,
-  GLenum        severity,
-  GLsizei       length,
-  const GLchar* message,
-  const void*   param
+  GLenum, GLenum, GLuint, GLenum severity, GLsizei, const GLchar* message,
+  const void*
 ) {
   if (severity == GL_DEBUG_SEVERITY_NOTIFICATION) {
     return;
@@ -137,7 +132,7 @@ namespace yay {
     m_texture->buffer(pixels);
     const GLint loc = glGetUniformLocation(m_shader_program_id, "u_texture");
     glUniform1i(loc, 0);
-    glDrawArrays(GL_TRIANGLES, 0, vertex_data.size());
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertex_data.size()));
   }
 
   void Renderer::end_frame() {

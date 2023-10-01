@@ -15,16 +15,16 @@ namespace yay {
     Texture(Texture&& other);
     Texture& operator = (Texture&& other);
 
-    inline USize width()  const { return m_width;  }
-    inline USize height() const { return m_height; }
+    inline U32 width()  const { return m_width;  }
+    inline U32 height() const { return m_height; }
     
     inline GLuint id() const { return m_id; }
 
     void buffer(const PixelBuffer& pixels);
     void bind();
   private:
-    USize  m_width;
-    USize  m_height;
+    U32    m_width;
+    U32    m_height;
     GLuint m_id;
   };
 
