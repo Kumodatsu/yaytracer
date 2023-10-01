@@ -33,7 +33,9 @@ int main(int, char**) {
       const auto& ray = rays[u + width * v];
       const auto intersection = sphere.intersect(ray);
       if (intersection.has_value()) {
-        color = intersection->color;
+        // color = intersection->color;
+        const Vector& normal = intersection->normal;
+        color = 0.5f * Color(normal.x + 1.0f, normal.y + 1.0f, normal.z + 1.0f);
       } else {
         const auto a = 0.5f * ray.direction.y + 1.0f;
         color = blend(a, colors::White, Color(0.5f, 0.7f, 1.0f));
@@ -41,7 +43,6 @@ int main(int, char**) {
       buffer.at(u, v) = color;
     }
   }
-
 
   while (!window.is_close_requested()) {
     renderer.begin_frame();

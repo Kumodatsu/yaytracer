@@ -3,6 +3,7 @@
 #include "math/vector.hpp"
 #include "graphics/intersection.hpp"
 #include "graphics/ray.hpp"
+#include <algorithm>
 #include <optional>
 
 namespace yay {
@@ -22,16 +23,28 @@ namespace yay {
       const Vector
         sphere_to_ray = ray.origin - position;
       const Real
-        a = dot(ray.direction, ray.direction),
-        b = 2.0f * dot(sphere_to_ray, ray.direction),
-        c = dot(sphere_to_ray, sphere_to_ray) - radius * radius,
-        d = b * b - 4.0f * a * c;
+        a      = ray.direction.length_squared(),
+        half_b = dot(sphere_to_ray, ray.direction),
+        c      = sphere_to_ray.length_squared() - radius * radius,
+        d      = half_b * half_b - a * c;
       if (d < 0.0f) {
         return std::nullopt;
       }
+      const Real
+        sqrt_d    = sqrt(d),
+        inverse_a = 1.0f / a,
+        t0        = inverse_a * (-half_b - sqrt_d),
+        t1        = inverse_a * (-half_b + sqrt_d),
+        t         = t0 < 0.0f ? t1 : t0;
+      if (t < 0.0f) {
+        return std::nullopt;
+      }
+      const Vector
+        intersection_position = ray.at(t),
+        intersection_normal   = (intersection_position - position) / radius;
       return Intersection(
-        Vector(0.0f, 0.0f, 0.0f),
-        Vector(0.0f, 1.0f, 0.0f),
+        intersection_position,
+        intersection_normal,
         colors::Red
       );
     }
