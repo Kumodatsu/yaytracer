@@ -22,28 +22,39 @@ namespace yay {
     , m_viewport_v(0.0f, -m_viewport_height, 0.0f)
     , m_pixel_u(m_viewport_u / static_cast<Real>(m_width))
     , m_pixel_v(m_viewport_v / static_cast<Real>(m_height))
-    , m_pixel_position(
-      m_position
-      - Vector(0.0f, 0.0f, m_focal_length)
-      - 0.5f * m_viewport_u
-      - 0.5f * m_viewport_v
-      + 0.5f * (m_pixel_u + m_pixel_v)
-    )
+    , m_pixel_position(calculate_pixel_position())
   { }
+
+  void Camera::position(const Vector& position) {
+    m_position       = position;
+    m_pixel_position = calculate_pixel_position();
+  }
 
   std::vector<Ray> Camera::rays() const {
     std::vector<Ray> rays;
     for (Natural v = 0; v < m_height; ++v) {
       for (Natural u = 0; u < m_width; ++u) {
-        const auto pixel_position
-          = m_pixel_position
-          + static_cast<Real>(u) * m_pixel_u
-          + static_cast<Real>(v) * m_pixel_v;
-        const auto direction = (pixel_position - m_position).normalized();
-        rays.emplace_back(m_position, direction);
+        rays.emplace_back(ray(u, v));
       }
     }
     return rays;
+  }
+
+  Vector Camera::calculate_pixel_position() const {
+    return m_position
+      - Vector(0.0f, 0.0f, m_focal_length)
+      - 0.5f * m_viewport_u
+      - 0.5f * m_viewport_v
+      + 0.5f * (m_pixel_u + m_pixel_v);
+  }
+
+  Ray Camera::ray(Natural u, Natural v) const {
+    const auto pixel_position
+      = m_pixel_position
+      + static_cast<Real>(u) * m_pixel_u
+      + static_cast<Real>(v) * m_pixel_v;
+    const auto direction = (pixel_position - m_position).normalized();
+    return Ray(m_position, direction);
   }
 
 }

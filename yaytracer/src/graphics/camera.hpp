@@ -19,6 +19,14 @@ namespace yay {
       return static_cast<Real>(m_width) / static_cast<Real>(m_height);
     }
 
+    inline const Vector& position() const { return m_position; }
+
+    void position(const Vector& position);
+
+    inline void move(const Vector& movement) {
+      position(m_position + movement);
+    }
+
     std::vector<Ray> rays() const;
   private:
     Natural
@@ -38,6 +46,10 @@ namespace yay {
       m_pixel_u,
       m_pixel_v,
       m_pixel_position;
+
+    Vector calculate_pixel_position() const;
+
+    Ray ray(Natural u, Natural v) const;
   };
 
 }
