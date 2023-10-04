@@ -40,7 +40,7 @@ namespace yay {
     }
     
     void fire(Publisher publisher, Args... args) const {
-      for (const auto [subscription, callback] : m_callbacks) {
+      for (const auto& [subscription, callback] : m_callbacks) {
         callback(publisher, args...);
       }
     }

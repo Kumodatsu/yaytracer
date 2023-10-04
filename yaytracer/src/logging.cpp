@@ -16,7 +16,7 @@ namespace yay {
       case LogLevel::Error:   return stream << "Error";
       case LogLevel::Fatal:   return stream << "Fatal";
     }
-    assert(("Invalid LogLevel value.", false));
+    assert("Invalid LogLevel value." && false);
     return stream;
   }
 

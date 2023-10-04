@@ -8,7 +8,7 @@ unless otherwise specified.
 ### Prerequisites
 * [Git][git]
 * [CMake 3.23.0 or later][cmake]
-* Some C++ build environment, such as GCC and Make or MSVC.
+* Some C++ build environment, such as G++ (>= 13) and Make or MSVC.
 
 ### Building
 After cloning the repository, the submodules must be initialized once by

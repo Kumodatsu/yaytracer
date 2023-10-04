@@ -7,11 +7,11 @@
 
 #ifdef NDEBUG
 #define YAY_LOG_TO(logger, log_level)                                          \
-  if constexpr (::yay::LogLevel:: ## log_level != ::yay::LogLevel::Debug)      \
-    logger += ::yay::LogMessage(::yay::LogLevel:: ## log_level)
+  if constexpr (::yay::LogLevel::log_level != ::yay::LogLevel::Debug)          \
+    logger += ::yay::LogMessage(::yay::LogLevel::log_level)
 #else
 #define YAY_LOG_TO(logger, log_level)                                          \
-  logger += ::yay::LogMessage(::yay::LogLevel:: ## log_level)                  \
+  logger += ::yay::LogMessage(::yay::LogLevel::log_level)                      \
     << "(" << ::std::filesystem::path(__FILE__).filename().string()            \
     << ":" << __LINE__ << ") "
 #endif

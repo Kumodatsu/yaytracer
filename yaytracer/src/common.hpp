@@ -1,9 +1,10 @@
 #pragma once
 #include <cstdint>
+#include <cstddef>
 
 namespace yay {
   
-  using I8 = int8_t;
+  using I8  = int8_t;
   using I16 = int16_t;
   using I32 = int32_t;
   using I64 = int64_t;
