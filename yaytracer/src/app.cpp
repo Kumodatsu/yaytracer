@@ -1,5 +1,6 @@
 #include "app.hpp"
 #include "common.hpp"
+#include "graphics/sphere.hpp"
 
 static constexpr yay::U32
   width  = 960,
@@ -12,8 +13,11 @@ namespace yay {
     , m_window("Yaytracer", width, height)
     , m_renderer(m_window)
     , m_camera(width, height, 0.5f, Vector(0.0f, 0.0f, 0.0f))
-    , m_sphere(Vector(0.0f, 0.0f, -1.0f), 0.5f)
+    , m_scene()
   {
+    m_scene
+      .add(Sphere(Vector(-1.0f, 0.0f, -1.0f), 0.1f))
+      .add(Sphere(Vector(1.0f, 0.0f, -1.0f), 1.0f));
     run();
   }
 
@@ -58,17 +62,8 @@ namespace yay {
     const auto rays = m_camera.rays();
     for (UIndex v = 0; v < height; ++v) {
       for (UIndex u = 0; u < width; ++u) {
-        Color color;
-        const auto& ray = rays[u + width * v];
-        const auto intersection = m_sphere.intersect(ray);
-        if (intersection.has_value()) {
-          // color = intersection->color;
-          const Vector& normal = intersection->normal;
-          color = 0.5f * Color(normal.x + 1.0f, normal.y + 1.0f, normal.z + 1.0f);
-        } else {
-          const auto a = 0.5f * ray.direction.y + 1.0f;
-          color = blend(a, colors::White, Color(0.5f, 0.7f, 1.0f));
-        }
+        const Ray&  ray   = rays[u + width * v];
+        const Color color = m_scene.trace(ray);
         m_pixel_buffer.at(u, v) = color;
       }
     }

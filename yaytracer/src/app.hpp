@@ -3,7 +3,7 @@
 #include "rendering/window.hpp"
 #include "rendering/renderer.hpp"
 #include "graphics/camera.hpp"
-#include "graphics/sphere.hpp"
+#include "graphics/scene.hpp"
 
 namespace yay {
 
@@ -15,8 +15,7 @@ namespace yay {
     Window      m_window;
     Renderer    m_renderer;
     Camera      m_camera;
-
-    Sphere m_sphere;
+    Scene       m_scene;
 
     void run();
     void handle_input();
