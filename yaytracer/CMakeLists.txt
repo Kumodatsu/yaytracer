@@ -10,6 +10,7 @@ project(
 add_executable(
   yaytracer
   "src/main.cpp"
+  "src/app.cpp"
   "src/logging.cpp"
   "src/rendering/pixel_buffer.cpp"
   "src/rendering/texture.cpp"
