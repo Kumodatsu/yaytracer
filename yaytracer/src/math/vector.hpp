@@ -67,6 +67,30 @@ namespace yay {
     return inverse * v;
   }
 
+  inline constexpr Vector& operator += (Vector& a, const Vector& b) {
+    return a = a + b;
+  }
+
+  inline constexpr Vector& operator -= (Vector& a, const Vector& b) {
+    return a = a - b;
+  }
+
+  inline constexpr Vector& operator *= (Vector& a, const Vector& b) {
+    return a = a * b;
+  }
+
+  inline constexpr Vector& operator /= (Vector& a, const Vector& b) {
+    return a = a / b;
+  }
+
+  inline constexpr Vector& operator *= (Vector& v, Real s) {
+    return v = v * s;
+  }
+
+  inline constexpr Vector& operator /= (Vector& v, Real s) {
+    return v = v / s;
+  }
+
   inline constexpr Real dot(const Vector& a, const Vector& b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
   }
