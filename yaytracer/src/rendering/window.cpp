@@ -1,5 +1,6 @@
 #include "rendering/window.hpp"
 #include "logging.hpp"
+#include "arcana.hpp"
 
 namespace yay {
 
@@ -25,6 +26,22 @@ namespace yay {
     }
     YAY_LOG(Info) << "Created window.";
     glfwMakeContextCurrent(m_handle);
+    glfwSetWindowUserPointer(m_handle, this);
+    glfwSetKeyCallback(m_handle,
+      [](GLFWwindow* handle, int keycode, int, int action, int) {
+        Window* window =
+          reinterpret_cast<Window*>(glfwGetWindowUserPointer(handle));
+        const Key key = static_cast<Key>(keycode);
+        switch (action) {
+          case GLFW_PRESS:
+            window->on_key_pressed(*window, key);
+            break;
+          case GLFW_RELEASE:
+            window->on_key_released(*window, key);
+            break;
+        }
+      }
+    );
   }
 
   Window::~Window() {
@@ -38,6 +55,10 @@ namespace yay {
 
   void Window::poll_events() const {
     glfwPollEvents();
+  }
+
+  bool Window::is_key_down(Key key) const {
+    return glfwGetKey(m_handle, underlying_cast(key)) == GLFW_PRESS;
   }
 
 }

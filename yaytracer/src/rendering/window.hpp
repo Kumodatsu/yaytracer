@@ -1,5 +1,7 @@
 #pragma once
 #include "common.hpp"
+#include "input/key.hpp"
+#include "event/event.hpp"
 #include <string>
 #include <GLFW/glfw3.h>
 
@@ -23,6 +25,10 @@ namespace yay {
 
     bool is_close_requested() const;
     void poll_events() const;
+    bool is_key_down(Key key) const;
+
+    Event<const Window&, Key> on_key_pressed;
+    Event<const Window&, Key> on_key_released;
   private:
     std::string m_title;
     U32 m_width, m_height;

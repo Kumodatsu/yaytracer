@@ -23,6 +23,13 @@ int main(int, char**) {
   Window window("Yaytracer", width, height);
   Renderer renderer(window);
 
+  Subscriber on_key_pressed(window.on_key_pressed, [](const Window&, Key key) {
+    std::cout << key << " pressed" << std::endl;
+  });
+  Subscriber on_key_released(window.on_key_released, [](const Window&, Key key) {
+    std::cout << key << " released" << std::endl;
+  });
+
   Sphere sphere(Vector(0.0f, 0.0f, -1.0f), 0.5f);
 
   Camera camera(width, height, 0.5f, Vector(0.0f, 0.0f, 0.0f));
@@ -47,6 +54,9 @@ int main(int, char**) {
   while (!window.is_close_requested()) {
     renderer.begin_frame();
     renderer.render(buffer);
+    if (window.is_key_down(Key::Space)) {
+      YAY_LOG(Info) << "SPACE!";
+    }
     renderer.end_frame();
     window.poll_events();
   }
