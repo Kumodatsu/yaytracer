@@ -15,6 +15,8 @@ namespace yay {
     inline UCount       width()  const { return m_width;       }
     inline UCount       height() const { return m_height;      }
     inline const Color* data()   const { return m_data.data(); }
+    
+    inline Color* data() { return m_data.data(); }
 
     inline Color& at(UIndex u, UIndex v) {
       return m_data[u + m_width * v];
