@@ -1,6 +1,8 @@
 #include "app.hpp"
 #include "common.hpp"
 #include "graphics/sphere.hpp"
+#include "logging.hpp"
+#include <chrono>
 
 static constexpr yay::U32
   width  = 960,
@@ -15,6 +17,7 @@ namespace yay {
     , m_camera(width, height, 0.5f, Vector(0.0f, 0.0f, 0.0f))
     , m_scene()
   {
+    Logger::get_static_logger().set_log_level(LogLevel::Debug);
     m_scene
       .add(Sphere(Vector(-1.0f, 0.0f, -1.0f), 0.1f))
       .add(Sphere(Vector(1.0f, 0.0f, -1.0f), 1.0f));
@@ -22,13 +25,27 @@ namespace yay {
   }
 
   void App::run() {
+    using clock = std::chrono::steady_clock;
+    auto   time          = clock::now();
+    auto   previous_time = time;
+    auto   frame_timer   = time;
+    UCount frames        = 0;     
     while (!m_window.is_close_requested()) {
+      previous_time = time;
+      time          = clock::now(); 
+      const auto delta = time - previous_time;
+      if (time - frame_timer > std::chrono::seconds(1)) {
+        YAY_LOG(Info) << "Framerate: " << frames << " Hz";
+        frame_timer = time;
+        frames      = 0;
+      }
       handle_input();
       m_renderer.begin_frame();
       render();
       m_renderer.render(m_pixel_buffer);
       m_renderer.end_frame();
       m_window.poll_events();
+      frames++;
     }
   }
 
