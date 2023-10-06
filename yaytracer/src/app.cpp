@@ -16,6 +16,10 @@ namespace yay {
     , m_renderer(m_window)
     , m_camera(width, height, 0.5f, Vector(0.0f, 0.0f, 0.0f))
     , m_scene()
+    , m_parallel(8, 256, [this](const Ray& ray) {
+        return this->m_scene.trace(ray);
+      })
+    , m_rays(m_camera.rays())
   {
     Logger::get_static_logger().set_log_level(LogLevel::Debug);
     m_scene
@@ -60,18 +64,14 @@ namespace yay {
       + m_window.is_key_down(Key::LeftControl) * Vector::down();
     if (movement.length_squared() != 0.0f) {
       m_camera.move(speed * movement.normalized());
+      m_rays = m_camera.rays();
     }
   }
 
   void App::render() {
-    const auto rays = m_camera.rays();
-    for (UIndex v = 0; v < height; ++v) {
-      for (UIndex u = 0; u < width; ++u) {
-        const Ray&  ray   = rays[u + width * v];
-        const Color color = m_scene.trace(ray);
-        m_pixel_buffer.at(u, v) = color;
-      }
-    }
+    m_parallel.start(m_rays);
+    const auto colors = m_parallel.wait();
+    memcpy(m_pixel_buffer.data(), colors.data(), sizeof(Color) * colors.size());
   }
 
 }
