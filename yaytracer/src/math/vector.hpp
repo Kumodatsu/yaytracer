@@ -32,6 +32,14 @@ namespace yay {
       y *= inverse_length;
       z *= inverse_length;
     }
+
+    inline static constexpr Vector zero()     { return { 0.0f,  0.0f,  0.0f}; }
+    inline static constexpr Vector left()     { return {-1.0f,  0.0f,  0.0f}; }
+    inline static constexpr Vector right()    { return { 1.0f,  0.0f,  0.0f}; }
+    inline static constexpr Vector down()     { return { 0.0f, -1.0f,  0.0f}; }
+    inline static constexpr Vector up()       { return { 0.0f,  1.0f,  0.0f}; }
+    inline static constexpr Vector forward()  { return { 0.0f,  0.0f, -1.0f}; }
+    inline static constexpr Vector backward() { return { 0.0f,  0.0f,  1.0f}; }
   };
 
   inline constexpr Vector operator + (const Vector& a, const Vector& b) {

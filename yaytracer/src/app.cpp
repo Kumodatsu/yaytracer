@@ -51,25 +51,13 @@ namespace yay {
 
   void App::handle_input() {
     static constexpr F32 speed = 0.05f;
-    Vector movement = Vector(0.0f, 0.0f, 0.0f);
-    if (m_window.is_key_down(Key::A)) {
-      movement += Vector(-1.0f, 0.0f, 0.0f);
-    }
-    if (m_window.is_key_down(Key::D)) {
-      movement += Vector(1.0f, 0.0f, 0.0f);
-    }
-    if (m_window.is_key_down(Key::W)) {
-      movement += Vector(0.0f, 0.0f, -1.0f);
-    }
-    if (m_window.is_key_down(Key::S)) {
-      movement += Vector(0.0f, 0.0f, 1.0f);
-    }
-    if (m_window.is_key_down(Key::Space)) {
-      movement += Vector(0.0f, 1.0f, 0.0f);
-    }
-    if (m_window.is_key_down(Key::LeftControl)) {
-      movement += Vector(0.0f, -1.0f, 0.0f);
-    }
+    Vector movement = Vector::zero()
+      + m_window.is_key_down(Key::A)           * Vector::left()
+      + m_window.is_key_down(Key::D)           * Vector::right()
+      + m_window.is_key_down(Key::W)           * Vector::forward()
+      + m_window.is_key_down(Key::S)           * Vector::backward()
+      + m_window.is_key_down(Key::Space)       * Vector::up()
+      + m_window.is_key_down(Key::LeftControl) * Vector::down();
     if (movement.length_squared() != 0.0f) {
       m_camera.move(speed * movement.normalized());
     }
