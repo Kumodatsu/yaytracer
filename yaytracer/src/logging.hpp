@@ -24,8 +24,8 @@
 namespace yay {
 
   enum class LogLevel {
-    Debug,   // Messages for debug purposes. Stripped out of release builds.
     Verbose, // Extra messages that generally may be superfluous.
+    Debug,   // Messages for debug purposes. Stripped out of release builds.
     Info,    // Regular log messages.
     Warning, // Messages indicating a problem might appear in the future.
     Error,   // Messages for recovarable errors.
@@ -64,12 +64,14 @@ namespace yay {
       m_log_level = log_level;
     }
   private:
+    using LocalTime =
+      std::chrono::zoned_time<std::chrono::system_clock::duration>;
+    
     std::ostream& m_stream;
     LogLevel      m_log_level;
     std::mutex    m_mutex;
 
-    void log(std::ostream& stream, const LogMessage& message,
-      std::chrono::system_clock::time_point time);
+    void log(std::ostream& stream, const LogMessage& message, LocalTime time);
   };
 
 }

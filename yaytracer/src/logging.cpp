@@ -35,7 +35,10 @@ namespace yay {
     if (message_log_level < m_log_level) {
       return;
     }
-    const auto time = std::chrono::system_clock::now();
+    const LocalTime time {
+      std::chrono::current_zone(),
+      std::chrono::system_clock::now()
+    };
     log(std::cout, message, time);
     if (message_log_level == LogLevel::Fatal) {
       throw std::runtime_error("An unrecoverable error occured.");
@@ -43,7 +46,7 @@ namespace yay {
   }
 
   void Logger::log(std::ostream& stream, const LogMessage& message,
-      std::chrono::system_clock::time_point time) {
+      LocalTime time) {
     std::lock_guard<std::mutex> lock(m_mutex);
     stream
       << "["
