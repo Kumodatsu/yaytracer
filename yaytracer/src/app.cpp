@@ -23,8 +23,8 @@ namespace yay {
   {
     Logger::get_static_logger().set_log_level(LogLevel::Debug);
     m_scene
-      .add(Sphere(Vector(-1.0f, 0.0f, -1.0f), 0.1f))
-      .add(Sphere(Vector(1.0f, 0.0f, -1.0f), 1.0f));
+      .add(Sphere(Vector(0.0f, 0.0f, -1.0f), 0.5f))
+      .add(Sphere(Vector(0.0f, -100.5f, -1.0f), 100.0f));
     run();
   }
 

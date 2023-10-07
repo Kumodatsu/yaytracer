@@ -3,12 +3,24 @@
 
 namespace yay {
 
-  Color Scene::trace(const Ray& ray) const {
+  Scene::Scene()
+    : m_objects()
+    , m_rng(7319337)
+  { }
+
+  Color Scene::trace(const Ray& ray, U16 depth) {
+    static constexpr UCount max_depth = 8;
+    if (depth > max_depth) {
+      return colors::Black;
+    }
     const auto intersection = nearest_intersection(ray);
     if (intersection.has_value()) {
-      // return intersection->color;
-      const Vector& normal = intersection->normal;
-      return 0.5f * Color(normal.x + 1.0f, normal.y + 1.0f, normal.z + 1.0f);
+      const Vector& normal    = intersection->normal;
+      const Vector  direction = m_rng.hemisphere(normal);
+      const Ray bounced_ray(intersection->position, direction);
+      return 0.5f * trace(bounced_ray, depth + 1);
+      //return blend(0.5f, intersection->color, trace(bounced_ray, depth + 1));
+      //return 0.5f * Color(normal.x + 1.0f, normal.y + 1.0f, normal.z + 1.0f);
     } else {
       const auto a = 0.5f * ray.direction.y + 1.0f;
       return blend(a, colors::White, Color(0.5f, 0.7f, 1.0f));
@@ -29,6 +41,10 @@ namespace yay {
           nearest_intersection = intersection;
         }
       }
+    }
+    static constexpr F32 epsilon = 0.001f;
+    if (nearest_distance < epsilon) {
+      return std::nullopt;
     }
     return nearest_intersection;
   }
