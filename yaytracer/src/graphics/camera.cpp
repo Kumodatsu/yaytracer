@@ -48,11 +48,11 @@ namespace yay {
       + 0.5f * (m_pixel_u + m_pixel_v);
   }
 
-  Ray Camera::ray(Natural u, Natural v) const {
+  Ray Camera::ray(Natural u, Natural v, Real u_offset, Real v_offset) const {
     const auto pixel_position
       = m_pixel_position
-      + static_cast<Real>(u) * m_pixel_u
-      + static_cast<Real>(v) * m_pixel_v;
+      + (static_cast<Real>(u) + u_offset) * m_pixel_u
+      + (static_cast<Real>(v) + v_offset) * m_pixel_v;
     const auto direction = (pixel_position - m_position).normalized();
     return Ray(m_position, direction);
   }

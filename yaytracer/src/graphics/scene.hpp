@@ -9,6 +9,10 @@
 #include <optional>
 
 namespace yay {
+
+  struct TraceProgress {
+    U64 samples;
+  };
   
   class Scene {
   public:
@@ -19,7 +23,10 @@ namespace yay {
       return *this;
     }
 
-    Color trace(const Ray& ray, U16 depth = 1);
+    Color sample(const Ray& ray, U16 depth = 1);
+
+    void trace(Color& color, const Ray& ray);
+    void trace(Color& color, const Ray& ray, TraceProgress& progress);
     std::optional<Intersection> nearest_intersection(const Ray& ray) const;
   private:
     std::vector<Sphere> m_objects;

@@ -1,6 +1,7 @@
 #include "app.hpp"
 #include "common.hpp"
 #include "graphics/sphere.hpp"
+#include "graphics/color.hpp"
 #include "logging.hpp"
 #include <chrono>
 
@@ -17,7 +18,9 @@ namespace yay {
     , m_camera(width, height, 0.5f, Vector(0.0f, 0.0f, 0.0f))
     , m_scene()
     , m_parallel(8, 256, [this](const Ray& ray) {
-        return this->m_scene.trace(ray);
+        Color color = colors::Black;
+        this->m_scene.trace(color, ray);
+        return color;
       })
     , m_rays(m_camera.rays())
   {
