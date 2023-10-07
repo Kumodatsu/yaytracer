@@ -14,8 +14,22 @@ namespace yay {
     return Color(s * color.r, s * color.g, s * color.b);
   }
 
+  inline constexpr Color operator * (const Color& color, Real s) {
+    return Color(s * color.r, s * color.g, s * color.b);
+  }
+
+  inline constexpr Color operator / (const Color& color, Real s) {
+    const Real inverse = 1.0f / s;
+    return inverse * color;
+  }
+
   inline constexpr Color operator + (const Color& a, const Color& b) {
     return Color(a.r + b.r, a.g + b.g, a.b + b.b);
+  }
+
+  inline constexpr Color& operator += (Color& a, const Color& b) {
+    a = a + b;
+    return a;
   }
   
   inline constexpr Color blend(
