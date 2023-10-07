@@ -27,12 +27,16 @@ namespace yay {
       return Vector(real(min, max), real(min, max), real(min, max));
     }
 
-    inline Vector hemisphere(const Vector& normal) {
+    inline Vector unit_vector() {
       Vector result;
       do {
         result = vector(-1.0f, 1.0f);
       } while (result.length_squared() > 1.0f);
-      result.normalize();
+      return result.normalized();
+    }
+
+    inline Vector hemisphere(const Vector& normal) {
+      const Vector result = unit_vector();
       return dot(result, normal) < 0.0f ? -result : result;
     }
   private:

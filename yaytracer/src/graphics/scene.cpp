@@ -16,7 +16,7 @@ namespace yay {
     const auto intersection = nearest_intersection(ray);
     if (intersection.has_value()) {
       const Vector& normal    = intersection->normal;
-      const Vector  direction = m_rng.hemisphere(normal);
+      const Vector  direction = (normal + m_rng.unit_vector()).normalized();
       const Ray bounced_ray(intersection->position, direction);
       return 0.5f * trace(bounced_ray, depth + 1);
       //return blend(0.5f, intersection->color, trace(bounced_ray, depth + 1));
