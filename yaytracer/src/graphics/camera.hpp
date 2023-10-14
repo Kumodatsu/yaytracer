@@ -20,6 +20,8 @@ namespace yay {
     }
 
     inline const Vector& position() const { return m_position; }
+    inline Natural       width()    const { return m_width;    }
+    inline Natural       height()   const { return m_height;   }
 
     void position(const Vector& position);
 
@@ -28,6 +30,8 @@ namespace yay {
     }
 
     std::vector<Ray> rays() const;
+    Ray ray(Natural u, Natural v, Real u_offset = 0.0f, Real v_offset = 0.0f)
+      const;
   private:
     Natural
       m_width,
@@ -48,8 +52,6 @@ namespace yay {
       m_pixel_position;
 
     Vector calculate_pixel_position() const;
-
-    Ray ray(Natural u, Natural v) const;
   };
 
 }
